@@ -1,14 +1,14 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "include": [
-    "./src/**/*.d.ts",
-    "./src/**/*.ts",
-    "./src/**/*.astro",
-    "./src/**/*.vue"
-  ],
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "jsxImportSource": "astro",
+    "strict": true,
     "baseUrl": "./src",
-    "types": ["node"],
     "paths": {
       "@components/*": ["components/*"],
       "@layouts/*": ["layouts/*"],
@@ -16,7 +16,12 @@
       "@core/*": ["core/*"],
       "@images/*": ["images/*"],
       "@styles/*": ["styles/*"]
-    },
-    "jsx": "preserve"
-  }
+    }
+  },
+  "include": [
+    "./src/**/*.d.ts",
+    "./src/**/*.ts",
+    "./src/**/*.astro",
+    "./src/**/*.vue"
+  ]
 }
