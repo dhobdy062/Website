@@ -3,9 +3,25 @@ export async function onRequest(context) {
   try {
     // Parse form data
     const formData = await context.request.formData();
-    const formValues = Object.fromEntries(formData.entries());
     
-    // Connect to Airtable
+    // Process form values, handling arrays properly
+    const formValues = {};
+    for (const [key, value] of formData.entries()) {
+      // Handle checkbox arrays (products[])
+      if (key.endsWith('[]')) {
+        const cleanKey = key.replace('[]', '');
+        if (!formValues[cleanKey]) {
+          formValues[cleanKey] = [];
+        }
+        formValues[cleanKey].push(value);
+      } else {
+        formValues[key] = value;
+      }
+    }
+    
+    console.log('Form data being sent to Airtable:', formValues);
+    
+    / // Connect to Airtable
     const response = await fetch(
       `https://api.airtable.com/v0/${context.env.AIRTABLE_BASE_ID}/${context.env.AIRTABLE_TABLE_NAME}`,
       {
@@ -22,7 +38,9 @@ export async function onRequest(context) {
     
     // Check for success
     if (!response.ok) {
-      throw new Error('Failed to submit to Airtable');
+          const errorData = await response.json().catch(() => null);
+      console.error('Airtable API error:', errorData || response.statusText);
+      throw new Error(`Failed to submit to Airtable: ${response.status} ${response.statusText}`);
     }
     
     // Redirect to thank you page
