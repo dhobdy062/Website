@@ -128,7 +128,7 @@ const { backgroundColor } = Astro.props;
 <script>
   let hasModalBeenShown = false;
 
-  function handleExitIntent(event) {
+  function handleExitIntent(event: MouseEvent) {
     if (!hasModalBeenShown && event.clientY <= 0) {
       // Show modal when mouse moves to top of window
       const modal = document.getElementById('exitModal');
@@ -140,9 +140,9 @@ const { backgroundColor } = Astro.props;
   }
 
   // Handle closing modal when clicking outside
-  function handleModalClick(event) {
+  function handleModalClick(event: MouseEvent) {
     const modal = document.getElementById('exitModal');
-    if (event.target === modal) {
+    if (modal && event.target === modal) {
       modal.classList.remove('show');
     }
   }
@@ -157,4 +157,3 @@ const { backgroundColor } = Astro.props;
     document.getElementById('exitModal')?.removeEventListener('click', handleModalClick);
   });
 </script>
-
