@@ -8,16 +8,24 @@ const { backgroundColor } = Astro.props;
   <div class="background section">
     <div class="container d-flex justify-content-center align-items-center">
       <div class="hero-content d-flex flex-column flex-grow-1">
-        <img src="/shield-logo.webp" alt="Shield Logo" class="shield-logo mx-auto mb-4" width="120" height="120">
+        <div class="promo-banner alert alert-primary mb-4 text-center mx-auto py-3">
+          <p class="mb-0 fw-bold">Use Promo Code "Pura Vida" for an Exclusive Offer!</p>
+          <p class="mb-0">Unlock a 50% discount on your membership plan during the ABU event by using the promo code "Pura Vida." Don't miss out—this special offer is valid for the event only!</p>
+        </div>
         <h1 class="title mb-4 text-center mx-auto">
-          The next generation of wholesale distribution services
+        Advancing the Evolution of Wholesale Distribution Services,
         </h1>
         <p
           class="subtitle fs-4 lh-lg text-body-secondary text-center mb-5 mx-auto"
         >
-          Wholesalers Advantage offers a diverse array of direct, and B2B
-          solutions, Insurtech innovation, insurance, and our “Tax Wallet” the
-          latest in AI driven tax services
+          Wholesalers Advantage is committed to delivering innovative direct and B2B solutions,
+          seamlessly integrating Insurtech advancements, comprehensive insurance offerings, and strategic financial programs.
+
+          Our wholesaler program is meticulously designed to support large-scale distribution organizations,
+          providing premier contracts, industry-leading compensation structures, and exceptional marketing support.
+
+          By fostering strategic partnerships and offering unparalleled resources, we ensure our clients
+          achieve both operational excellence and sustained growth in today's dynamic market.
         </p>
         <div class="mx-auto">
           <a
@@ -30,6 +38,20 @@ const { backgroundColor } = Astro.props;
       </div>
     </div>
   </div>
+
+  <!-- Exit Intent Modal -->
+  <div id="exitModal" class="exit-modal">
+    <div class="exit-modal-content">
+      <h2 class="text-center mb-4">Agent and Brokers United 2025<br>Members and Attendees</h2>
+      <p class="text-center fs-4 mb-4">Sign up and <span class="fw-bold">SAVE 50%!</span></p>
+      <p class="text-center mb-4">Use promo code <span class="fw-bold text-primary">"Pura Vida"</span> during the ABU event</p>
+      <div class="text-center">
+        <a href={pages.membership.path} class="btn btn-primary btn-lg rounded-pill fs-4 fw-bold">
+          Click here to SIGN UP NOW
+        </a>
+      </div>
+    </div>
+  </div>
 </section>
 
 <style define:vars={{ backgroundColor }}>
@@ -39,6 +61,7 @@ const { backgroundColor } = Astro.props;
 
   .background {
     background-color: var(--backgroundColor);
+    padding-inline: 10rem;
   }
 
   h1 {
@@ -53,6 +76,85 @@ const { backgroundColor } = Astro.props;
   }
 
   p {
-    max-width: 700px;
+    max-width: 800px;  /* Changed from 700px to 800px to match other sections */
+  }
+
+  @media screen and (max-width: 991px) {
+    .background {
+      padding-inline: 2rem;
+    }
+  }
+
+  .exit-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .exit-modal-content {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 600px;
+    margin: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .exit-modal.show {
+    display: flex;
+  }
+
+  .promo-banner {
+    max-width: 800px;
+    border-radius: 0.5rem;
+    border-left: 5px solid #0d6efd;
+    background-color: rgba(13, 110, 253, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .promo-banner p.fw-bold {
+    font-size: 1.25rem;
+    color: #0d6efd;
   }
 </style>
+
+<script>
+  let hasModalBeenShown = false;
+
+  function handleExitIntent(event) {
+    if (!hasModalBeenShown && event.clientY <= 0) {
+      // Show modal when mouse moves to top of window
+      const modal = document.getElementById('exitModal');
+      if (modal) {
+        modal.classList.add('show');
+        hasModalBeenShown = true;
+      }
+    }
+  }
+
+  // Handle closing modal when clicking outside
+  function handleModalClick(event) {
+    const modal = document.getElementById('exitModal');
+    if (event.target === modal) {
+      modal.classList.remove('show');
+    }
+  }
+
+  // Add event listeners
+  document.addEventListener('mouseleave', handleExitIntent);
+  document.getElementById('exitModal')?.addEventListener('click', handleModalClick);
+
+  // Clean up event listeners
+  document.addEventListener('astro:before-swap', () => {
+    document.removeEventListener('mouseleave', handleExitIntent);
+    document.getElementById('exitModal')?.removeEventListener('click', handleModalClick);
+  });
+</script>
+
